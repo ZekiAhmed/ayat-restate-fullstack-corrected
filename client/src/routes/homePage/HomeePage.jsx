@@ -1,17 +1,21 @@
-import SearchBar from "../../components/searchBar/SearchBar"
-import "./homePage.scss"
+import { useContext } from "react";
+import SearchBar from "../../components/searchBar/SearchBar";
+import "./homePage.scss";
+import { AuthContext } from "../../context/AuthContext";
 
 const HomeePage = () => {
+  const { currentUser } = useContext(AuthContext);
+  console.log(currentUser);
   return (
     <div className="homePage">
       <div className="textContainer">
         <div className="wrapper">
           <h1 className="title">Find Real Estate & Get Your Dream Place</h1>
           <p>
-            Lorem ipsum dolor, sit amet consectetur adipisicing elit. 
-            Nam quo voluptas neque esse enim aspernatur nesciunt fuga 
-            aut inventore. Ad tempore quam molestiae a eaque, incidunt 
-            omnis labore nobis laboriosam!
+            Lorem ipsum dolor, sit amet consectetur adipisicing elit. Nam quo
+            voluptas neque esse enim aspernatur nesciunt fuga aut inventore. Ad
+            tempore quam molestiae a eaque, incidunt omnis labore nobis
+            laboriosam!
           </p>
           <SearchBar />
           <div className="boxes">
@@ -35,7 +39,7 @@ const HomeePage = () => {
         <img src="/bg.png" alt="" />
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default HomeePage
+export default HomeePage;
