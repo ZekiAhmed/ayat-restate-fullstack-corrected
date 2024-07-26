@@ -3,7 +3,7 @@ import React, { useContext } from "react";
 import List from "../../components/list/List";
 import Chat from "../../components/chat/Chat";
 import apiRequest from "../../lib/apiRequest";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../context/AuthContext";
 
 const ProfilePage = () => {
@@ -25,7 +25,9 @@ const ProfilePage = () => {
         <div className="wrapper">
           <div className="title">
             <h1>User Information</h1>
-            <button>Udate Profile</button>
+            <Link to="/profile/update">
+              <button>Udate Profile</button>
+            </Link>
           </div>
           <div className="info">
             <span>
