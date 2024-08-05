@@ -1,4 +1,4 @@
-import prisma from "../lib/prisma";
+import prisma from "../lib/prisma.js";
 
 export const getPosts = async (req, res) => {
   try {
@@ -16,6 +16,15 @@ export const getPost = async (req, res) => {
       where: {
         id: id,
       },
+      include: {
+        postDetail: true,
+        user: {
+          select: {
+            username: true,
+            avatar: true,
+          },
+        },
+      },
     });
     res.status(200).json(post);
   } catch (err) {
@@ -25,12 +34,15 @@ export const getPost = async (req, res) => {
 };
 export const addPost = async (req, res) => {
   const body = req.body;
-  const tokenUserId = teq.userId;
+  const tokenUserId = req.userIdFromPayload;
   try {
     const newPost = await prisma.post.create({
       data: {
-        ...body,
+        ...body.postData,
         userId: tokenUserId,
+        postDetail: {
+          create: body.postDetail,
+        },
       },
     });
     res.status(200).json(newPost);
@@ -41,7 +53,7 @@ export const addPost = async (req, res) => {
 };
 export const updatePost = async (req, res) => {
   try {
-    res.status(200).json(users);
+    res.status(200).json();
   } catch (err) {
     console.log(err);
     res.status(500).json({ message: "Failed to update post!" });
@@ -49,7 +61,7 @@ export const updatePost = async (req, res) => {
 };
 export const deletePost = async (req, res) => {
   const id = req.params.id;
-  const tokenUserId = req.userId;
+  const tokenUserId = req.userIdFromPayload;
   try {
     const post = await prisma.post.findUnique({
       where: { id: id },
