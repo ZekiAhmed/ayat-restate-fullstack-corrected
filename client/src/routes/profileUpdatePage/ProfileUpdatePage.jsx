@@ -8,7 +8,7 @@ import UuploadWidget from "../../components/uploadWidget/UuploadWidget";
 const ProfileUpdatePage = () => {
   const { currentUser, updateUser } = useContext(AuthContext);
   const [error, setError] = useState("");
-  const [avatar, setAvatar] = useState(currentUser.avatar);
+  const [avatar, setAvatar] = useState([]);
 
   const navigate = useNavigate();
 
@@ -22,7 +22,7 @@ const ProfileUpdatePage = () => {
         username,
         email,
         password,
-        avatar,
+        avatar: avatar[0],
       });
       // console.log(res);
       updateUser(res.data);
@@ -64,7 +64,11 @@ const ProfileUpdatePage = () => {
         </form>
       </div>
       <div className="sideContainer">
-        <img src={avatar || "/noavatar.jpg"} alt="" className="avatar" />
+        <img
+          src={avatar[0] || currentUser.avatar || "/noavatar.jpg"}
+          alt=""
+          className="avatar"
+        />
         <UuploadWidget
           uwConfig={{
             cloudName: "dcweuom7d",
@@ -73,7 +77,7 @@ const ProfileUpdatePage = () => {
             maxImageFileSize: 2000000,
             folder: "avatars",
           }}
-          setAvatar={setAvatar}
+          setState={setAvatar}
         />
       </div>
     </div>
