@@ -151,7 +151,7 @@ const NewPostPage = () => {
               <input min={0} id="restaurant" name="restaurant" type="number" />
             </div>
             <button className="sendButton">Add</button>
-            {error && <span>{error}</span>}
+            {error && <span>error</span>}
           </form>
         </div>
       </div>
@@ -164,7 +164,6 @@ const NewPostPage = () => {
             multiple: true,
             cloudName: "dcweuom7d",
             uploadPreset: "estate",
-            maxImageFileSize: 2000000,
             folder: "posts",
           }}
           setState={setImages}
