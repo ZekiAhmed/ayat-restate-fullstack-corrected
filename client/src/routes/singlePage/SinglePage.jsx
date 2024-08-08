@@ -3,6 +3,7 @@ import Map from "../../components/map/Map";
 import "./singlePage.scss";
 import { singlePostData, userData } from "../../lib/dummydata";
 import { useLoaderData } from "react-router-dom";
+import DOMPurify from "dompurify";
 
 const SinglePage = () => {
   const post = useLoaderData();
@@ -27,7 +28,12 @@ const SinglePage = () => {
                 <span>{post.user.username}</span>
               </div>
             </div>
-            <div className="bottom">{post.postDetail.desc}</div>
+            <div
+              className="bottom"
+              dangerouslySetInnerHTML={{
+                __html: DOMPurify.sanitize(post.postDetail.desc),
+              }}
+            ></div>
           </div>
         </div>
       </div>
