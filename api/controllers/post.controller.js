@@ -1,4 +1,5 @@
 import prisma from "../lib/prisma.js";
+import jwt from "jsonwebtoken";
 
 export const getPosts = async (req, res) => {
   const query = req.query;
@@ -24,6 +25,7 @@ export const getPosts = async (req, res) => {
     res.status(500).json({ message: "Failed to get posts!" });
   }
 };
+
 export const getPost = async (req, res) => {
   const id = req.params.id;
   try {
@@ -41,12 +43,54 @@ export const getPost = async (req, res) => {
         },
       },
     });
-    res.status(200).json(post);
+
+    let userId;
+
+    const token = req.cookies?.token;
+
+    if (!token) {
+      userId = null;
+    } else {
+      jwt.verify(token, process.env.JWT_SECRET_KEY, async (err, payload) => {
+        if (err) {
+          userId = null;
+        } else {
+          userId = payload.id;
+        }
+      });
+    }
+
+    const saved = await prisma.savedPost.findUnique({
+      where: {
+        userId_postId: {
+          postId: id,
+          userId: userId,
+        },
+      },
+    });
+
+    // if (token) {
+    //   jwt.verify(token, process.env.JWT_SECRET_KEY, async (err, payload) => {
+    //     if (!err) {
+    //       const saved = await prisma.savedPost.findUnique({
+    //         where: {
+    //           userId_postId: {
+    //             postId: id,
+    //             userId: payload.id,
+    //           },
+    //         },
+    //       });
+    //       res.status(200).json({ ...post, isSaved: saved ? true : false });
+    //     }
+    //   });
+    // }
+    res.status(200).json({ ...post, isSaved: saved ? true : false });
   } catch (err) {
     console.log(err);
     res.status(500).json({ message: "Failed to get post!" });
   }
 };
+
 export const addPost = async (req, res) => {
   const body = req.body;
   const tokenUserId = req.userIdFromPayload;
@@ -66,6 +110,7 @@ export const addPost = async (req, res) => {
     res.status(500).json({ message: "Failed to add post!" });
   }
 };
+
 export const updatePost = async (req, res) => {
   try {
     res.status(200).json();

@@ -87,10 +87,10 @@ export const savePost = async (req, res) => {
       },
     });
 
-    if (savePost) {
+    if (savedPost) {
       await prisma.savedPost.delete({
         where: {
-          id: savePost.id,
+          id: savedPost.id,
         },
       });
       res.status(200).json({ message: "Post removed from saved list" });
