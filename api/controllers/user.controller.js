@@ -110,7 +110,7 @@ export const savePost = async (req, res) => {
 };
 
 export const profilePosts = async (req, res) => {
-  const tokenUserId = req.params.userId;
+  const tokenUserId = req.params.userId; // all the 3 are the same
   // const tokenUserId = req.userId;
   // const tokenUserId = req.userIdFromPayload;
 
